@@ -1,0 +1,115 @@
+version: "3.3"
+services:
+  master:
+    image: have1568/elasticsearch-6.4.3-ik:1.0
+    environment:
+      - "TERM=dumb"
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "discovery.zen.ping.unicast.hosts=master"
+      - "cluster.name=docker-es-cluster"
+      - "node.master=true"
+      - "node.data=false"
+      - "node.ingest=false"
+    networks:
+      - esnet
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+      - target: 9300
+        published: 9300
+        protocol: tcp
+        mode: host
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - eslogs:/usr/share/elasticsearch/logs
+    deploy:
+      endpoint_mode: dnsrr
+      mode: 'replicated'
+      replicas: 2
+  data:
+    image: have1568/elasticsearch-6.4.3-ik:1.0
+    environment:
+      - "TERM=dumb"
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "discovery.zen.ping.unicast.hosts=master"
+      - "cluster.name=docker-es-cluster"
+      - "node.master=false"
+      - "node.data=true"
+      - "node.ingest=false"
+    networks:
+      - esnet
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+      - target: 9300
+        published: 9300
+        protocol: tcp
+        mode: host
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - eslogs:/usr/share/elasticsearch/logs
+    deploy:
+      endpoint_mode: dnsrr
+      mode: 'replicated'
+      replicas: 2
+  ingest:
+    image: have1568/elasticsearch-6.4.3-ik:1.0
+    environment:
+      - "TERM=dumb"
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+      - "discovery.zen.minimum_master_nodes=2"
+      - "discovery.zen.ping.unicast.hosts=master"
+      - "cluster.name=docker-es-cluster"
+      - "node.master=false"
+      - "node.data=false"
+      - "node.ingest=true"
+    networks:
+      - esnet
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - eslogs:/usr/share/elasticsearch/logs
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+      - target: 9300
+        published: 9300
+        protocol: tcp
+        mode: host
+    deploy:
+      endpoint_mode: dnsrr
+      mode: 'replicated'
+      replicas: 1
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.4.3
+    environment:
+      ELASTICSEARCH_URL: http://master:9200
+      XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: 'false'  #这个设置可以在监控看到ES的CPU ,内存的使用信息
+    networks:
+      - esnet
+    ports:
+      - target: 5601
+        published: 5601
+        protocol: tcp
+        mode: host
+    deploy:
+      endpoint_mode: dnsrr
+      mode: 'replicated'
+      replicas: 1
+      placement:
+        constraints: [node.labels.node.role==node-master]  #指定服务部署到 node.labels.node.role==node-master 的 docker节点
+volumes:
+  esdata:
+    driver: local
+  eslogs:
+    driver: local
+networks:
+  esnet:
+    driver: overlay

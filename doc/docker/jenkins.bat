@@ -1,0 +1,1 @@
+docker run -u root -d --name jenkins-local --restart=always -v /mnt/sda1/var/lib/docker/volumes/jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 --env JENKINS_OPTS="--prefix=/jenkins" jenkins/jenkins:lts

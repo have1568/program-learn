@@ -1,0 +1,32 @@
+#初始化命令
+#rs.initiate({"_id":"mongo-repliset","members":[ {"_id":0,"host":"192.168.241.131:27017"},  {"_id":1,"host":"192.168.241.131:27018"}, {"_id":2,"host":"192.168.241.131:27019",arbiterOnly:true}]})
+version: '3.1'
+services:
+  mongo-master:
+    image: mongo
+    container_name: mongo-master
+    restart: always
+    ports:
+      - 27017:27017
+    command: mongod --replSet mongo-repliset
+    volumes:
+      - '/opt/data/mongo-master:/data/db'
+  mongo-slave:
+    image: mongo
+    container_name: mongo-slave
+    restart: always
+    ports:
+      - 27018:27017
+    command: mongod --replSet mongo-repliset
+    volumes:
+      - '/opt/data/mongo-slave:/data/db'
+  mongo-arbiter:
+    image: mongo
+    container_name: mongo-arbiter
+    restart: always
+    ports:
+      - 27019:27017
+    command: mongod --replSet mongo-repliset
+    volumes:
+      - '/opt/data/mongo-arbiter:/data/db'
+

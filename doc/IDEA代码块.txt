@@ -1,0 +1,2 @@
+groovyScript("'\"' + _1.collect { it + ' = [\" + ' + it + ' + \"]'}.join(', ') + '\"'", methodParameters())
+groovyScript("'\"' + _1.collect { it + ' = [{}]'}.join(', ') + '\",'+_1.collect { it }.join(', ')", methodParameters())
