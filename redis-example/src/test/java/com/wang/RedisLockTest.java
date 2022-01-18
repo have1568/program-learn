@@ -102,7 +102,6 @@ public class RedisLockTest extends RedisExampleApplicationTest {
         for (int i = 0; i < threadNumber; i++) {
             service.execute(() -> {
                 countDownLatch.countDown();
-                //
                 if (lock(LOCK_KEY, String.valueOf(LOCK_VALUE))) {
                     try {
                         //调用秒杀业务
@@ -131,12 +130,12 @@ public class RedisLockTest extends RedisExampleApplicationTest {
 
     /**
      * spring-integration-redis 底层实现Lua脚本
-     *  https://zhuanlan.zhihu.com/p/141023090
+     * https://zhuanlan.zhihu.com/p/141023090
      */
     @Test
     void test_with_redis_script_lock() throws InterruptedException {
 
-        int threadNumber = 1000; //秒杀线程
+        int threadNumber = 10000; //秒杀线程
 
         String LOCK_KEY = "product_id";
 
@@ -144,28 +143,28 @@ public class RedisLockTest extends RedisExampleApplicationTest {
         CountDownLatch countDownLatch = new CountDownLatch(threadNumber);
 
 
-        ExecutorService service = Executors.newFixedThreadPool(5);
+        ExecutorService service = Executors.newFixedThreadPool(10);
         ProductService productService = new ProductService();
         Lock lock = redisLockRegistry.obtain(LOCK_KEY);
         log.info("======秒杀开始=======");
         for (int i = 0; i < threadNumber; i++) {
             service.execute(() -> {
-                countDownLatch.countDown();
                 try {
-                    if (lock.tryLock(3,TimeUnit.SECONDS)) {
+                    if (lock.tryLock(3, TimeUnit.SECONDS)) {
+                        //拿到锁之后在减 1
+                        countDownLatch.countDown();
                         //调用秒杀业务
-                        boolean success = productService.spikeRedis();
-                        if(!success){
-                            productService.fail.incrementAndGet();
-                        }
+                        productService.spike();
                     }
                 } catch (Exception e) {
                     System.out.println("error");
+                    countDownLatch.countDown();
                 } finally {
                     try {
                         lock.unlock();
                     } catch (Exception e) {
                         System.out.println("error");
+                        countDownLatch.countDown();
                     }
 
                 }
@@ -178,6 +177,8 @@ public class RedisLockTest extends RedisExampleApplicationTest {
         System.out.println(productService.success);
         System.out.println(productService.success.size());
         System.out.println(productService.fail);
+        //不通过原因 TODO
+        Assertions.assertEquals(threadNumber, productService.success.size() + productService.fail.get());
     }
 
 
@@ -197,7 +198,7 @@ public class RedisLockTest extends RedisExampleApplicationTest {
         ProductService productService = new ProductService();
         log.info("======秒杀开始=======");
         for (int i = 0; i < threadNumber; i++) {
-            service.submit(() -> {
+            service.execute(() -> {
                 //调用秒杀业务
                 countDownLatch.countDown();
                 productService.lockSpike();
@@ -232,25 +233,13 @@ public class RedisLockTest extends RedisExampleApplicationTest {
             if (stock > 0) {
                 flag = true;
                 success.add(stock);
-                stock= stock -1;
+                stock = stock - 1;
             } else {
                 fail.incrementAndGet();
             }
 
             return flag;
         }
-        //秒杀方法
-        public boolean spikeRedis() {
-
-            boolean flag = false;
-            if (stock > 0) {
-                flag = true;
-                success.add(stock);
-                stock= stock -1;
-            }
-            return flag;
-        }
-
         //秒杀方法
         public boolean lockSpike() {
             lock.lock();

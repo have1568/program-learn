@@ -288,7 +288,7 @@ public class RedisTransactionTest extends RedisExampleApplicationTest {
 
 #### 9.4 分布式锁
 
-#### 9.5 内存淘汰策略
+#### 9.5 内存淘汰策略 & 内存碎片
 
 当内存使用量超过了maxmemory配置的限制时，Redis可以使用以下策略来淘汰数据：
 * noeviction：默认策略，当达到内存使用限制且客户端尝试执行可能会使用更多内存的命令时返回错误。

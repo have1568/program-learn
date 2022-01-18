@@ -1,0 +1,27 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread{8}] %level %yellow(%C{20}.%M):%L - %m%n</Pattern>
+            <!--            <pattern>-->
+            <!--                {-->
+            <!--                "ip": "${ip}",-->
+            <!--                "app": "${appName}",-->
+            <!--                "level": "%level",-->
+            <!--                "trace": "%X{X-B3-TraceId:-}",-->
+            <!--                "span": "%X{X-B3-SpanId:-}",-->
+            <!--                "parent": "%X{X-B3-ParentSpanId:-}",-->
+            <!--                "thread": "%thread",-->
+            <!--                "class": "%logger{40}",-->
+            <!--                "message": "%message",-->
+            <!--                "stack_trace": "%exception{10}"-->
+            <!--                　　　　　　　　　　　　　}-->
+            <!--            </pattern>-->
+        </layout>
+    </appender>
+    <logger name="org.springframework" level="DEBUG"/>
+<!--    <logger name="og4j.logger.org.springframework.jdbc.core.JdbcTemplate" level="debug"/>-->
+<!--    <logger name="org.postgresql.core" level="debug"/>-->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
