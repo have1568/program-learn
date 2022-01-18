@@ -1,4 +1,6 @@
 
+
+
 ##### Docker 快速安装
 
 `docker run -d --name postgres-server -v "$PWD/my-postgres.conf":/etc/postgresql/postgresql.conf -e POSTGRES_PASSWORD=123456 postgres:12 -c 'config_file=/etc/postgresql/postgresql.conf'`
@@ -26,7 +28,6 @@ sudo systemctl start postgresql-12
 - 实际中需要修改数据存储位置
 
 ```
-
 # Install the repository RPM:
 sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
@@ -53,7 +54,7 @@ su - postgres
 
 psql
 
-\pasword
+\password
 
 exit
 
@@ -65,10 +66,20 @@ host    all             all             0.0.0.0/0               md5
 postgresql.conf
 listen_addresses = '*'
 
-#优化性能（选择版本和计算机配置会有参考配置）
-https://pgtune.leopard.in.ua/
+
+
+#数据库插件安装
+yum search contrib
+yum -y install postgresql12-contrib.x86_64
+
 
 
 ```
+
+- 备库搭建
+
+> 优化性能（选择版本和计算机配置会有参考配置）
+> 
+> https://pgtune.leopard.in.ua/
 
 
