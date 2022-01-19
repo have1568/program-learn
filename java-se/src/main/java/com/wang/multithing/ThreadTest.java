@@ -13,7 +13,8 @@ public class ThreadTest {
 
             if (i == 40) {
                 try {
-                    thread.join(); //线程获得执行权，并且直到执行完
+                    //线程获得执行权，并且直到执行完
+                    thread.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

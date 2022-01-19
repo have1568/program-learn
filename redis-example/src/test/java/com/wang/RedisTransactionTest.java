@@ -25,7 +25,7 @@ public class RedisTransactionTest extends RedisExampleApplicationTest {
     }
 
     @Test
-    void test_transaction_with_exec() {
+    void  test_transaction_with_exec() {
 
         //开启
         redisTemplate.multi();

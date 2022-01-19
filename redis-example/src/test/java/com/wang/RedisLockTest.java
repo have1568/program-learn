@@ -78,6 +78,7 @@ public class RedisLockTest extends RedisExampleApplicationTest {
         System.out.println(productService.success);
         System.out.println(productService.success.size());
         System.out.println(productService.fail);
+        service.shutdown();
         Assertions.assertEquals(threadNumber, productService.success.size() + productService.fail.get());
     }
 
@@ -135,7 +136,7 @@ public class RedisLockTest extends RedisExampleApplicationTest {
     @Test
     void test_with_redis_script_lock() throws InterruptedException {
 
-        int threadNumber = 10000; //秒杀线程
+        int threadNumber = 100000; //秒杀线程
 
         String LOCK_KEY = "product_id";
 
@@ -177,6 +178,7 @@ public class RedisLockTest extends RedisExampleApplicationTest {
         System.out.println(productService.success);
         System.out.println(productService.success.size());
         System.out.println(productService.fail);
+        service.shutdown();
         //不通过原因 TODO
         Assertions.assertEquals(threadNumber, productService.success.size() + productService.fail.get());
     }
@@ -188,7 +190,7 @@ public class RedisLockTest extends RedisExampleApplicationTest {
     @Test
     void test_with_thread_lock() throws InterruptedException {
 
-        int threadNumber = 100000; //秒杀线程
+        int threadNumber = 10000; //秒杀线程
 
         //倒计时闩锁
         CountDownLatch countDownLatch = new CountDownLatch(threadNumber);
@@ -211,6 +213,7 @@ public class RedisLockTest extends RedisExampleApplicationTest {
         System.out.println(productService.success);
         System.out.println(productService.success.size());
         System.out.println(productService.fail);
+        service.shutdown();
         Assertions.assertEquals(threadNumber, productService.success.size() + productService.fail.get());
     }
 
