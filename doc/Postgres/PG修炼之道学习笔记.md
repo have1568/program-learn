@@ -5,7 +5,6 @@
 * 安装脚本
 
 ```bash
-
     #!/bin/bash
     # 关闭防火墙
     systemctl stop firewalld
@@ -32,11 +31,9 @@
     yum search contrib
     yum install postgresql12-contrib.x86_64
     
-    
-    lineNumber='grep -nr  "Environment=PGDATA" /usr/lib/systemd/system/postgresql-12.service | gawk '{print $1}' FS=":"'
-    
-    # TODO 这一行有BUG
-    sed "${lineNumber}c Environment=PGDATA=/opt/data/postgres" /usr/lib/systemd/system/postgresql-12.service
+    #配置初始环境变量
+    echo "[Service]" >> "/etc/systemd/system/postgresql-12.service.d/override.conf"
+    echo "Environment=PGDATA=/opt/data/postgres" >> "/etc/systemd/system/postgresql-12.service.d/override.conf"
     
     mkdir -p "/opt/data/postgres"
     

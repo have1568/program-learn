@@ -781,8 +781,8 @@ class NameHolder {
     * `Collections.synchronized*` 并发操作会异常
     * `CountDownLatch` 闭锁，用于等到所有线程执行完成，CountDownLatch 每一个线程池需要单独的一个去维护
 
-* Unsafe 类里的 final修饰的方法都是硬件级别 CAS 算法的体现 但是为什么是 Unsafe 不安全的原因可能是操作会失败 而不是值并发不安全
-* 读写锁 ReadWriteLock ReentrantLock实现的读写分离，并发读，安全写
+* Unsafe 类里的 final修饰的方法都是硬件级别 CAS 算法的体现 但是为什么是 Unsafe 不安全的原因可能是操作会失败 而不是值的并发操作不安全
+* 读写锁 ReadWriteLock是ReentrantLock实现的读写分离，并发读，安全写的一种锁
 
 ```java
 public class ReadWriteLockTest {

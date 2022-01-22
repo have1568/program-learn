@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello_react</title>
+</head>
+<body>
+<!-- 准备好一个“容器” -->
+<div id="app">
+
+</div>
+
+<!-- 引入react核心库 -->
+<script type="text/javascript" src="../js/react.development.js"></script>
+<!-- 引入react-dom，用于支持react操作DOM -->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<!-- 引入babel，用于将jsx转为js -->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<!--引入类型检查组件-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    class Login extends React.Component {
+        saveFormData = (dataName) => {
+            return (event) => {
+                this.setState({[dataName]: event.target.value})
+            }
+        }
+        handleLogin = (event) => {
+            //阻止默认提交事件
+            event.preventDefault();
+            console.log(this)
+            console.log(this.state)
+        }
+        render() {
+            return (
+                <form action="https://react.docschina.org/docs/refs-and-the-dom.html" onSubmit={this.handleLogin}>
+                    <input onChange={this.saveFormData("username")} type="text" name="username"/>
+                    <input onChange={this.saveFormData("password")} type="text" name="password"/>
+                    <button type="submit"> 登录</button>
+                </form>
+            )
+        }
+    }
+
+    ReactDOM.render(<Login/>, document.getElementById("app"))
+
+</script>
+</body>
+</html>

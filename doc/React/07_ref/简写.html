@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello_react</title>
+</head>
+<body>
+<!-- 准备好一个“容器” -->
+<div id="app">
+
+</div>
+
+<!-- 引入react核心库 -->
+<script type="text/javascript" src="../js/react.development.js"></script>
+<!-- 引入react-dom，用于支持react操作DOM -->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<!-- 引入babel，用于将jsx转为js -->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<!--引入类型检查组件-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    class AppClass extends React.Component {
+
+        showData = () => {
+            console.log(this);
+            console.log(this.rightInput)
+        }
+
+        myRef = React.createRef()
+        showData2 = () => {
+            console.log(this);
+            //myRef实例
+            console.log(this.myRef)
+            //DOM标签
+            console.log(this.myRef.current)
+            //获取绑定myRef的标签的value
+            console.log(this.myRef.current.value)
+        }
+
+        showData3 = (event) => {
+            console.log(this);
+            //事件Class
+            console.log(event)
+            //标签
+            console.log(event.target)
+        }
+        render() {
+            return (
+                <div>
+                    /*字符串Ref*/
+                    <input ref="leftInput" type="text"/>
+                    <button onClick={this.showData}>点击我</button>
+                    //回调函数式Ref
+                    <input ref={c => this.rightInput = c} type="text"/>
+                    <button onClick={this.showData2}>点击我</button>
+                    //API方式
+                    <input ref={this.myRef} type="text"/>
+                    //避免使用 Ref
+                    <input onBlur={this.showData3} type="text"/>
+                </div>
+            )
+        }
+
+    }
+
+    //babel和react实现对象展开运算符的语法，仅仅适用标签对象传递
+    ReactDOM.render(<AppClass/>, document.getElementById("app"))
+
+</script>
+</body>
+</html>

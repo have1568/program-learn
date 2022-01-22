@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello_react</title>
+</head>
+<body>
+<!-- 准备好一个“容器” -->
+<div id="app">
+
+</div>
+
+<!-- 引入react核心库 -->
+<script type="text/javascript" src="../js/react.development.js"></script>
+<!-- 引入react-dom，用于支持react操作DOM -->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<!-- 引入babel，用于将jsx转为js -->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<!--引入类型检查组件-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    class Login extends React.Component {
+        //通过onChange事件绑定表单数据到 state 里
+        saveUsername = (event) => {
+            this.setState({"username": event.target.value})
+        }
+        savePassword = (event) => {
+            this.setState({"password": event.target.value})
+        }
+        handleLogin = (event) => {
+            //阻止默认提交事件
+            event.preventDefault();
+            console.log(this)
+            console.log(this.code.value)
+            console.log(this.state)
+        }
+        //this.code 是通过ref的方式直接绑定到当前组件实例上的
+        render() {
+            return (
+                <form action="https://react.docschina.org/docs/refs-and-the-dom.html" onSubmit={this.handleLogin}>
+                    <input onChange={this.saveUsername} type="text" name="username"/>
+                    <input onChange={this.savePassword} type="text" name="password"/>
+                   <input ref={c=>this.code = c} type="text" name="code"/>
+                    <button type="submit"> 登录</button>
+                </form>
+            )
+        }
+
+    }
+    ReactDOM.render(<Login/>, document.getElementById("app"))
+
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello_react</title>
+</head>
+<body>
+<!-- 准备好一个“容器” -->
+<div id="app">
+
+</div>
+
+<!-- 引入react核心库 -->
+<script type="text/javascript" src="../js/react.development.js"></script>
+<!-- 引入react-dom，用于支持react操作DOM -->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<!-- 引入babel，用于将jsx转为js -->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<script type="text/babel">
+
+    //Class方式创建
+    class AppClass extends React.Component {
+
+        constructor(props) {
+            super(props);
+            //初始化state对象
+            this.state = {isShow: false}
+            //给当前实例绑定一个clickTest，并将方法的this指定为 this ,解决this为 undefined 的问题
+            this.clickTest = this.clickTest.bind(this)
+        }
+
+        clickTest() {
+            console.log("click!!!")
+            //this 为 undefined
+            //只能是AppClass实例对象调用的才能获得this,类中的方法this指向该实例
+            console.log(this)
+
+            //必须先读取出来，不能直接在setState里取反
+            let current = this.state.isShow;
+            //这里的设置并没有覆盖整个state对象，只是isShow属性变了，合并机制
+            this.setState({isShow: !current})
+        }
+
+        //必须有render函数
+        render() {
+            //this 指向 AppClass实例
+            console.log(this)
+
+
+            //用表达式返回结果，不能直接 this.
+            //绑定事件调用方法，必须加 this. 这里没有调用clickTest 导致点击事件获取不到 this
+            //读取状态,必须读取出来，否则不生效
+            let showText = this.state.isShow;
+            return <h1 onClick={this.clickTest}>测试state:{showText ? '显示' : '隐藏'}</h1>
+        }
+    }
+
+
+    //<AppClass/> 会触发 new AppClass(),并通过改实例调用 render()函数
+    ReactDOM.render(<AppClass/>, document.getElementById("app"))
+
+</script>
+</body>
+</html>

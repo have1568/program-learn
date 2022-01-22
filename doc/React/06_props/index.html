@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello_react</title>
+</head>
+<body>
+<!-- 准备好一个“容器” -->
+<div id="app">
+
+</div>
+
+<!-- 引入react核心库 -->
+<script type="text/javascript" src="../js/react.development.js"></script>
+<!-- 引入react-dom，用于支持react操作DOM -->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<!-- 引入babel，用于将jsx转为js -->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<!--引入类型检查组件-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+
+    //Class方式创建
+    class AppClass extends React.Component {
+
+        constructor(props) {
+            super(props);
+        }
+
+        render() {
+            console.log(this)
+            //props的属性是只读的，不能修改
+            //this.props.sex = "MEN"
+            const sex = this.props.sex
+            const {say,name, age} = this.props
+            say()
+            return <div>
+                    <h1>测试props:{name}</h1>
+                    <h1>测试props:{age}</h1>
+                    <h1>测试props:{sex}</h1>
+                </div>
+        }
+
+    }
+
+    //类型限制
+    AppClass.propTypes ={
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number.isRequired,
+       say:PropTypes.func
+    }
+
+    //指定默认值
+    AppClass.defaultProps={
+        say(){
+            console.log("ssss")
+        }
+    }
+
+    const person = {name: "hello", age: 15}
+
+    //这里的... person 是语法糖，不是展开运算符，展开预算符只能展开数组
+
+    //复制对象
+    let person2 = {...person}
+
+    //babel和react实现对象展开运算符的语法，仅仅适用标签对象传递
+    ReactDOM.render(<AppClass {...person} sex='Vue'/>, document.getElementById("app"))
+
+</script>
+</body>
+</html>
