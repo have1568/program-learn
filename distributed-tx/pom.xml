@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.wang</groupId>
+    <artifactId>distributed-tx</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.14.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <modules>
+        <module>activemq</module>  <!--原生消息队列-->
+        <module>activemq-spring</module> <!--spring消息队列-->
+        <module>jpa-tx</module> <!--JPA事务-->
+        <module>jms-tx</module> <!--jms事务-->
+        <module>jta-tx</module> <!--jta单数据源事务-->
+        <module>jta-tx-multi</module> <!--jta多数据源事务-->
+        <module>dtx-db-db</module> <!--jdbc链式事务-->
+        <module>dtx-db-jpa</module> <!--jdbc-jpa链式事务-->
+        <module>dtx-db-jms</module> <!--jpa-jms链式事务-->
+        <module>axon-demo</module> <!--axon简单实例-->
+        <module>axon-saga</module> <!--axon简单实例-->
+    </modules>
+</project>

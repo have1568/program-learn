@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+
+    <logger name="net.wang.jmstx" level="DEBUG"/>
+    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="org.springframework.jms" level="DEBUG"/>
+    <logger name="org.springframework.transaction" level="DEBUG"/>
+    <logger name="javax.transaction" level="DEBUG"/>
+    <logger name="javax.jms" level="DEBUG"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
